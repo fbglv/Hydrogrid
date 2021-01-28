@@ -35,5 +35,8 @@ RUN /opt/miniconda3/bin/conda install sqlalchemy -y
 RUN mkdir /opt/urlshrtn
 COPY ./urlshrtn/*.py /opt/urlshrtn/
 
+CMD [ "python /opt/urlshrtn/main.py" ]
+
+
 
 # EXPOSE 8080/tcp
