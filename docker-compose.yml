@@ -1,0 +1,44 @@
+version: '3.8'
+services:
+
+  hydrogrid_db:
+    image: hydrogrid_db
+    container_name: hydrogrid_db
+    hostname: hydrogrid_db
+    
+    build:
+      context: .
+      dockerfile: db/Dockerfile
+    
+    volumes:
+      - dbdata:/var/opt/mssql
+
+    ports:
+      - "1433:1433"
+
+    restart: unless-stopped
+
+
+
+  hydrogrid_urlshrtn:
+    image: hydrogrid_urlshrtn
+    container_name: hydrogrid_urlshrtn
+    hostname: hydrogrid_urlshrtn
+
+    build: 
+      context: .
+      dockerfile: urlshrtn/Dockerfile
+
+    depends_on:
+      - hydrogrid_db
+
+    restart: on-failure
+    command: ["sleep","infinity"]
+
+
+      
+# Docker volumes will be persisted on the host machine!
+volumes:
+  dbdata:
+
+
