@@ -51,6 +51,7 @@ def getUrlOrig(url_shrt):
 
 
 
+
 @app.route('/teleport/<url_shrt_code>', methods = ['GET'])
 def teleport(url_shrt_code):
     print("\n\n/teleport/ for: " + str(url_shrt_code))
@@ -75,7 +76,8 @@ def teleport(url_shrt_code):
 
 
 @app.route('/addurlshrtn/<url_orig_prc>/<url_orig_dom>/<exp_days>', methods=['GET'])
-def addurlshrtn(url_orig_prc, url_orig_dom, exp_days):
+@app.route('/addurlshrtn/<url_orig_prc>/<url_orig_dom>/', methods = ['GET'])
+def addurlshrtn(url_orig_prc, url_orig_dom, exp_days="3"):
     print("\n\n/addurlshrtn/ for url prc: " + str(url_orig_prc) + "; urc domain: " + str(url_orig_dom) + "; expiration days: " + str(exp_days))
     
     res = dbmgr.add_url_shrtn(url_orig_prc, url_orig_dom, exp_days)

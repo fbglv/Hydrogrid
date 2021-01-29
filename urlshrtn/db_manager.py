@@ -35,7 +35,9 @@ class DbManager:
         for i in res:
             res_dict.append({"status": "OK", "url_shrtn": i['url_shortened']}) 
 
-        # res_dict.append({"status": "OK", "url_shrtn": "http://127.0.0.1:8080/teleport/"+url_shrtn}) 
+        if len(res_dict) < 1:
+            res_dict = []
+            res_dict.append({"status": "GENERIC_DATABASE_ERROR"})
 
         return res_dict[0]
 
