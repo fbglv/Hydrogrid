@@ -14,6 +14,17 @@ app = Flask(__name__)
 # url_service = Blueprint('url_api', __name__) # flask blueprints: https://flask.palletsprojects.com/en/1.1.x/blueprints/
 
 
+
+@app.route('/geturlshrtn/<url_orig>/<exp_days>', methods=['GET'])
+def getUrlShrtn(url_orig, exp_days):
+    print("\n\n/geturlshrtn/ for: " + str(url_orig) + "; expiration_date: " + str(exp_days))
+    dbmgr = DbManager()
+    dbmgr.connect_db()
+    url_shrtn = dbmgr.get_url_shrtn(url_orig, exp_days)
+
+    return jsonify(url_shrtn)   
+
+"""
 @app.route('/geturlshrtn/<url_orig>', methods=['GET'])
 def getUrlShrtn(url_orig):
     # url_orig = request.args.get('urlorig')
@@ -23,19 +34,7 @@ def getUrlShrtn(url_orig):
     url_shrtn = dbmgr.get_url_shrtn(url_orig)
 
     return jsonify(url_shrtn)
-
-
-# DEBUG
-@app.route('/geturlshrtntest/<url_orig>/<exp_days>', methods=['GET'])
-def getUrlShrtnTest(url_orig, exp_days):
-    print("\n\n/geturlshrtntest/ for: " + str(url_orig) + "; expiration_date: " + str(exp_days))
-    dbmgr = DbManager()
-    dbmgr.connect_db()
-    url_shrtn = dbmgr.get_url_shrtn_test(url_orig, exp_days)
-
-    return jsonify(url_shrtn)   
-
-
+"""
 
 
 @app.route('/geturlorig/<url_shrt>', methods = ['GET'])
