@@ -3,44 +3,42 @@ from flask import Flask, abort, request, jsonify
 from flask import jsonify
 from flask import redirect
 import json
+import logging
 from db_manager import DbManager
 
 
 # print("URL Service")
 
+logging.basicConfig(level=logging.DEBUG)
+
 app = Flask(__name__)
-@app.route('/welcome/', methods=['GET'])
+
+dbmgr = DbManager()
+dbmgr.connect_db()
+
 
 # url_service = Blueprint('url_api', __name__) # flask blueprints: https://flask.palletsprojects.com/en/1.1.x/blueprints/
 
 
 
-@app.route('/geturlshrtn/<url_orig>/<exp_days>', methods=['GET'])
-def getUrlShrtn(url_orig, exp_days):
-    print("\n\n/geturlshrtn/ for: " + str(url_orig) + "; expiration_date: " + str(exp_days))
-    dbmgr = DbManager()
-    dbmgr.connect_db()
-    url_shrtn = dbmgr.get_url_shrtn(url_orig, exp_days)
+@app.route('/geturlshrtn/<url_orig>', methods=['GET'])
+def getUrlShrtn(url_orig):
+    print("\n\n/geturlshrtn/ for: " + str(url_orig))
+    # dbmgr = DbManager()
+    # dbmgr.connect_db()
+    url_shrtn = dbmgr.get_url_shrtn(url_orig)
 
     return jsonify(url_shrtn)   
 
-"""
-@app.route('/geturlshrtn/<url_orig>', methods=['GET'])
-def getUrlShrtn(url_orig):
-    # url_orig = request.args.get('urlorig')
-    print("\n\n/geturlshrtn/ for: " + str(url_orig))
-    dbmgr = DbManager()
-    dbmgr.connect_db()
-    url_shrtn = dbmgr.get_url_shrtn(url_orig)
 
-    return jsonify(url_shrtn)
-"""
+
+
 
 
 @app.route('/geturlorig/<url_shrt>', methods = ['GET'])
 def getUrlOrig(url_shrt):
-    dbmgr = DbManager()
-    dbmgr.connect_db()
+    # dbmgr = DbManager()
+    # dbmgr.connect_db()
     url_orig = dbmgr.get_url_orig(url_shrt)
 
     print("\n\n/geturlorig/ for: " + str(url_shrt))
@@ -53,21 +51,36 @@ def getUrlOrig(url_shrt):
 
 
 
-@app.route('/teleport/<url_shrt>', methods = ['GET'])
-def teleport(url_shrt):
-    print("\n\n/teleport/ for: " + str(url_shrt))
+@app.route('/teleport/<url_shrt_code>', methods = ['GET'])
+def teleport(url_shrt_code):
+    print("\n\n/teleport/ for: " + str(url_shrt_code))
 
-    dbmgr = DbManager()
-    dbmgr.connect_db()
-    url_orig = dbmgr.get_url_orig(url_shrt)
+    res = dbmgr.get_url_orig(url_shrt_code)
 
-    print("type of url_orig: "+str(type(url_orig)))
-    print(url_orig)
-    print("url_orig: "+str(url_orig['url_original']))
-    print("jsonifyed url_orig: "+str(jsonify(url_orig)))
+    print("type of res: "+str(type(res)))
+    print(res)
+    # print("url_orig: "+str(res['url_original']))
+    print("jsonifyed res: "+str(jsonify(res)))
     
-    return redirect("http://" + url_orig['url_original'])
+    print("STATUS: " + res['status'])
+    if res['status'] == "OK":
+        return redirect(res['url_original'])
+    else:    
+        return jsonify(res)
+
+    # return redirect("http://" + url_orig['url_original'])
     # return redirect(f"http://{urls_orig[0]}")
+
+
+
+
+@app.route('/addurlshrtn/<url_orig_prc>/<url_orig_dom>/<exp_days>', methods=['GET'])
+def addurlshrtn(url_orig_prc, url_orig_dom, exp_days):
+    print("\n\n/addurlshrtn/ for url prc: " + str(url_orig_prc) + "; urc domain: " + str(url_orig_dom) + "; expiration days: " + str(exp_days))
+    
+    res = dbmgr.add_url_shrtn(url_orig_prc, url_orig_dom, exp_days)
+
+    return jsonify(res)
 
 
 

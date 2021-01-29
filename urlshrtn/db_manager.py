@@ -1,4 +1,7 @@
 from sqlalchemy import create_engine
+from datetime import datetime
+from random import seed, random
+
 
 class DbManager:  
     db = None
@@ -19,13 +22,26 @@ class DbManager:
         # db.execute("CREATE TABLE IF NOT EXISTS...")    
     """
 
-    """
-    def add_match(self, match_name, match_partner_name):
-        self.db.execute("merge into dbo.matches as Tgt using (select %s as [name], %s as [partner_name]) as Src on (Tgt.[name] = Src.[name]) when matched then update set Tgt.[name] = Src.[name], Tgt.[partner_name] = Src.[partner_name] when not matched then insert ([name], [partner_name]) values (Src.[name], Src.[partner_name]);", match_name, match_partner_name)  
-    """    
-    
+   
+    def add_url_shrtn(self, url_original_protocol, url_original_domain, expiration_days):
+        print("\n\n\n\n\nurl_original: "+str(url_original_protocol) + "; url_original_domain: " + str(url_original_domain) + "; expiration_days: " + str(expiration_days)) # DEBUG
 
-    def get_url_shrtn(self, url_original, expiration_date):  
+        url_original = url_original_protocol + '://' + url_original_domain
+        seed(1)
+        url_shrtn = str(abs(hash(url_original+str(datetime.now())+str(random()))))
+
+        res = self.db.execute("insert into [dbo].[url_map] ([url_original], [url_shortened_code], [expiration_time]) output inserted.* values (%s, %s, getdate()+convert(int, %s));", url_original, url_shrtn, expiration_days)  
+        res_dict = []
+        for i in res:
+            res_dict.append({"status": "OK", "url_shrtn": i['url_shortened']}) 
+
+        # res_dict.append({"status": "OK", "url_shrtn": "http://127.0.0.1:8080/teleport/"+url_shrtn}) 
+
+        return res_dict[0]
+
+
+
+    def get_url_shrtn(self, url_original):  
         res = self.db.execute("select top 1 x.[url_shortened], x.[url_original], x.[expiration_time_str] as [expiration_time], x.[active] from dbo.url_map x where [url_original] = %s", url_original)
         res_dict = []
         for i in res:
@@ -38,7 +54,7 @@ class DbManager:
             # print("ACTIVE: " + str(res_dict[0]['active']))
             # print("DATA TYPE: " + str(type(res_dict[0]['active'])))
             res_dict = []
-            res_dict.append({"status": "ERROR_URL_NOT_ACTIVE_ANYMORE"})               
+            res_dict.append({"status": "ERROR_URL_NOT_ACTIVE"})               
 
         return res_dict[0] 
 
@@ -53,17 +69,22 @@ class DbManager:
 
 
 
-    def get_url_orig(self, url_shortened):  
-        res = self.db.execute("select top 1 x.[url_original], x.[url_shortened], x.[active] from dbo.url_map x where [url_shortened] = %s", url_shortened)
+    def get_url_orig(self, url_shortened_code):  
+        res = self.db.execute("select top 1 x.[url_original], x.[url_shortened], x.[url_shortened_code], x.[active] from dbo.url_map x where [url_shortened_code] = %s", url_shortened_code)
         res_dict = []
         for i in res:
-            res_dict.append({"url_original": i[0], "url_shortened": i[1], "active": i[2]})
+            res_dict.append({"status": "OK", "url_original": i[0], "url_shortened": i[1], "active": i[3]})
+
+        if len(res_dict) < 1:
+            res_dict.append({"status": "ERROR_NO_URLSHRTN_STORED"})
+        elif res_dict[0]['active'] == False:
+            res_dict = []
+            res_dict.append({"status": "ERROR_URL_NOT_ACTIVE"})
 
         return res_dict[0]
-        #
-        # ADD EXCEPTION IN CASE URL IS NOT FOUND / NOT ACTIVE!
-        # OR SIMPLY CHECK IN main.py for the [active] field
-        #
+
+
+
 
 """
 dbmgr = DbManager()  
