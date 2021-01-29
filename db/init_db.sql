@@ -17,6 +17,7 @@ create table url_map
     [url_original] nvarchar(255),
     [url_shortened] nvarchar(50),
 	[expiration_time] datetime null default (getdate()+3),
+	[expiration_time_str] as trim(str(year([expiration_time]))) + '-' + right(replicate('0',1)+trim(str(month([expiration_time]))),2) + '-' + right(replicate('0',1)+trim(str(day([expiration_time]))),2) + ' ' + right(replicate('0',1)+trim(str(datepart(HOUR,[expiration_time]))),2) + ':' + right(replicate('0',1)+trim(str(datepart(MINUTE,[expiration_time]))),2) + ':' + right(replicate('0',1)+trim(str(datepart(SECOND,[expiration_time]))),2),
 	[active] as convert(bit, iif([expiration_time] > getdate(), 'TRUE', 'FALSE'))   
 )
 go
