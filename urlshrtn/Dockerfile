@@ -20,22 +20,26 @@ RUN wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh -
 RUN mkdir -p /opt/miniconda3
 RUN bash ~/miniconda3/miniconda.sh -b -u -p /opt/miniconda3
 RUN rm -rf ~/miniconda3/ # rm -rf ~/miniconda3/miniconda.sh
-RUN /opt/miniconda3/bin/conda init bash
+ENV PATH="/opt/miniconda3/bin:${PATH}"
+RUN conda init bash
 
-RUN /opt/miniconda3/bin/conda update --all -y
+RUN conda update --all -y
 	
 # COPY ./urlshrtn/environment.yml /root/
 # RUN /opt/miniconda3/bin/conda env create -f ~/environment.yml
-RUN /opt/miniconda3/bin/conda install flask -y
-RUN /opt/miniconda3/bin/conda install pymssql -y
-RUN /opt/miniconda3/bin/conda install sqlalchemy -y
+RUN conda install flask -y
+RUN conda install pymssql -y
+RUN conda install sqlalchemy -y
 
 
 # python scripts
 RUN mkdir /opt/urlshrtn
 COPY ./urlshrtn/*.py /opt/urlshrtn/
 
-CMD [ "python /opt/urlshrtn/main.py" ]
+
+# automatically run the webserver
+SHELL ["conda", "run", "-n", "base", "/bin/bash", "-c"]
+ENTRYPOINT ["conda", "run", "--no-capture-output", "-n", "base", "python", "/opt/urlshrtn/main.py"]
 
 
 
