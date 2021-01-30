@@ -19,5 +19,4 @@ if [ "$1" = '/opt/mssql/bin/sqlservr' ]; then
     initialize_app_database &
   fi
 fi
-
 exec "$@"
