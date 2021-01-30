@@ -24,8 +24,7 @@ dbmgr.connect_db()
 @app.route('/geturlshrtn/<url_shrt_code>', methods=['GET'])
 def getUrlShrtn(url_shrt_code):
     print("\n\n/geturlshrtn/ for: " + str(url_shrt_code))
-    # dbmgr = DbManager()
-    # dbmgr.connect_db()
+
     url_shrtn = dbmgr.get_url_shrtn(url_shrt_code)
 
     return jsonify(url_shrtn)   
@@ -37,8 +36,7 @@ def getUrlShrtn(url_shrt_code):
 
 @app.route('/geturlorig/<url_shrt>', methods = ['GET'])
 def getUrlOrig(url_shrt):
-    # dbmgr = DbManager()
-    # dbmgr.connect_db()
+
     url_orig = dbmgr.get_url_orig(url_shrt)
 
     print("\n\n/geturlorig/ for: " + str(url_shrt))
@@ -56,7 +54,7 @@ def getUrlOrig(url_shrt):
 def teleport(url_shrt_code):
     print("\n\n/teleport/ for: " + str(url_shrt_code))
 
-    res = dbmgr.get_url_orig(url_shrt_code)
+    res = dbmgr.get_url_shrtn(url_shrt_code)
 
     print("type of res: "+str(type(res)))
     print(res)
