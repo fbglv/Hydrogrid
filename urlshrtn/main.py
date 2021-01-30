@@ -21,12 +21,12 @@ dbmgr.connect_db()
 
 
 
-@app.route('/geturlshrtn/<url_orig>', methods=['GET'])
-def getUrlShrtn(url_orig):
-    print("\n\n/geturlshrtn/ for: " + str(url_orig))
+@app.route('/geturlshrtn/<url_shrt_code>', methods=['GET'])
+def getUrlShrtn(url_shrt_code):
+    print("\n\n/geturlshrtn/ for: " + str(url_shrt_code))
     # dbmgr = DbManager()
     # dbmgr.connect_db()
-    url_shrtn = dbmgr.get_url_shrtn(url_orig)
+    url_shrtn = dbmgr.get_url_shrtn(url_shrt_code)
 
     return jsonify(url_shrtn)   
 
@@ -97,14 +97,6 @@ def delurlshrtn(url_shrt_code):
 
 
 
-
-"""
-@app.route('/redirect_url_shrt', methods = ['POST', 'GET'])
-def redirect_url_shrt():
-    if request.method == 'POST':
-        url_shrt = request.form['url_shrt']
-        return redirect(f"{url_shrt}")
-"""
 
 
 

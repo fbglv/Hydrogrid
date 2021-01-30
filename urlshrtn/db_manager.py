@@ -66,11 +66,11 @@ class DbManager:
 
 
 
-    def get_url_shrtn(self, url_original):  
-        res = self.db.execute("select top 1 x.[url_shortened], x.[url_original], x.[expiration_time_str] as [expiration_time], x.[active] from dbo.url_map x where [url_original] = %s", url_original)
+    def get_url_shrtn(self, url_shrt_code):  
+        res = self.db.execute("select top 1 x.[url_shortened], x.[url_shortened_code], x.[url_original], x.[expiration_time_str] as [expiration_time], x.[active] from dbo.url_map x where [url_shortened_code] = %s", url_shrt_code)
         res_dict = []
         for i in res:
-            res_dict.append({"status": "OK", "url_shortened": i[0], "url_original": i[1], "expiration_time": i[2], "active": i[3]})
+            res_dict.append({"status": "OK", "url_shortened": i[0], "url_shortened_code": i[1], "url_original": i[2], "expiration_time": i[3], "active": i[4]})
         # print("ROW COUNT: " + str(len(res_dict)))
         if len(res_dict) < 1:
             # print("NO RESULT")
