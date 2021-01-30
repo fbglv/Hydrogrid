@@ -16,11 +16,6 @@ class DbManager:
         else:
             print("Connection attempt to the database unsuccessful.")
 
-    
-    """
-    def init_db(self):          
-        # db.execute("CREATE TABLE IF NOT EXISTS...")    
-    """
 
    
     def add_url_shrtn(self, url_original_protocol, url_original_domain, expiration_days):
@@ -33,7 +28,7 @@ class DbManager:
         res = self.db.execute("insert into [dbo].[url_map] ([url_original], [url_shortened_code], [expiration_time]) output inserted.* values (%s, %s, getdate()+convert(int, %s));", url_original, url_shrtn, expiration_days)  
         res_dict = []
         for i in res:
-            res_dict.append({"status": "OK", "url_shrtn": i['url_shortened']}) 
+            res_dict.append({"status": "OK", "url_shrtn": i['url_shortened'], "url_shrtn_code": i['url_shortened_code']}) 
 
         if len(res_dict) < 1:
             res_dict = []
@@ -70,7 +65,7 @@ class DbManager:
         res = self.db.execute("select top 1 x.[url_shortened], x.[url_shortened_code], x.[url_original], x.[expiration_time_str] as [expiration_time], x.[active] from dbo.url_map x where [url_shortened_code] = %s", url_shrt_code)
         res_dict = []
         for i in res:
-            res_dict.append({"status": "OK", "url_shortened": i[0], "url_shortened_code": i[1], "url_original": i[2], "expiration_time": i[3], "active": i[4]})
+            res_dict.append({"status": "OK", "url_shortened": i['url_shortened'], "url_shortened_code": i['url_shortened_code'], "url_original": i['url_original'], "expiration_time": i['expiration_time'], "active": i['active']})
         # print("ROW COUNT: " + str(len(res_dict)))
         if len(res_dict) < 1:
             # print("NO RESULT")
@@ -83,22 +78,12 @@ class DbManager:
 
         return res_dict[0] 
 
-    """
-    def get_url_shrtn(self, url_original):  
-    res = self.db.execute("select top 1 x.[url_shortened], x.[url_original], x.[expiration_time], x.[active] from dbo.url_map x where [url_original] = %s", url_original)
-    res_dict = []
-    for i in res:
-        res_dict.append({"url_shortened": i[0], "url_original": i[1], "expiration_time": i[2], "active": i[3]})
-    return res_dict[0]
-    """
-
-
 
     def get_url_orig(self, url_shortened_code):  
         res = self.db.execute("select top 1 x.[url_original], x.[url_shortened], x.[url_shortened_code], x.[active] from dbo.url_map x where [url_shortened_code] = %s", url_shortened_code)
         res_dict = []
         for i in res:
-            res_dict.append({"status": "OK", "url_original": i[0], "url_shortened": i[1], "active": i[3]})
+            res_dict.append({"status": "OK", "url_original": i['url_original'], "url_shortened": i['url_shortened'], "url_shortened_code": i['url_shortened_code'], "active": i['active']})
 
         if len(res_dict) < 1:
             res_dict.append({"status": "ERROR_NO_URLSHRTN_STORED"})
@@ -109,23 +94,3 @@ class DbManager:
         return res_dict[0]
 
 
-
-
-"""
-dbmgr = DbManager()  
-dbmgr.connect_db()
-#dbmgr.init_db()  
-"""
-
-"""
-url_shrtn = dbmgr.get_url_shrtn("https://www.repubblica.it")
-print (type(url_shrtn))
-for i in url_shrtn:
-    print("Shortened URL: " + str(i[0]) + "; original URL: " + str(i[1]))
-"""
-
-"""
-match_name = input("Name: ")
-match_partner_name = input("Partner Name: ")
-dbmgr.add_match(match_name, match_partner_name)  
-"""
