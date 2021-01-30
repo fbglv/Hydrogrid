@@ -9,13 +9,13 @@
 ### Overview
 
 The entire software has been packaged in form of docker containers. In order for the containers to run, the following requirements must be met:
-* An Intel-based (**x86-64**) host machine (_the containers won't run on a new M1-powered Apple Mac!_)
-* The ports **8080** (web server) and **1433** (sql server) must be available on the host machine
-* A running [Docker Desktop](https://www.docker.com/products/docker-desktop) instance on the host machine is needed
+* The host machine must be Intel-based (**x86-64**) - _the containers won't run on a new M1-powered Apple Mac!_.
+* The ports **8080** (web server) and **1433** (sql server) must be available on the host machine.
+* A running [Docker Desktop](https://www.docker.com/products/docker-desktop) instance on the host machine is needed.
 
-The solution is started by **Docker Compose**, which in turns builds and run two docker containers connected to each other and to the host machine by a virtual network:
-* **hydrogrid_db**: runs a database instance (Microsoft SQL Server). The database data files are persisted in the host machine
-* **hydrogrid_urlshrtn**: contains the python-based webserver software and a conda instance to run it
+The solution must be started by **Docker Compose**. Docker-Compose builds and run two docker containers, and connects them to each other and to the host machine by a virtual network:
+* **hydrogrid_db**: the container running the database instance (Microsoft SQL Server). The database data files are persisted in the host machine.
+* **hydrogrid_urlshrtn**: the container hosting the python-based webserver software and a conda instance to run it
 
 ### Installation
 
