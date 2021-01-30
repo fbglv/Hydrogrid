@@ -13,7 +13,7 @@ insert into [dbo].[url_map] ([url_original], [url_shortened_code], [expiration_t
 commit transaction
 
 begin transaction
-delete from [dbo].[url_map] where [url_shortened_code] = N'xxx'
+delete from [dbo].[url_map] output deleted.* where [url_shortened_code] = N'xxx'
 commit transaction
 
 

@@ -43,6 +43,29 @@ class DbManager:
 
 
 
+    def del_url_shrtn(self, url_shortened_code):
+        print("\n\n\nurl_shortened_code: "+str(url_shortened_code)) # DEBUG
+
+        res = self.db.execute("delete from [dbo].[url_map] output deleted.* where [url_shortened_code] = %s;", url_shortened_code)
+        res_dict = []
+        for i in res:
+            if i['active'] == True:
+                res_status = "OK_DELETED"
+            else:
+                res_status = "OK_URLSHRTN_ALREADY_INACTIVE"
+            print("LOOP_STATUS") # DEBUG
+            res_dict.append({"status": res_status, "url_shrtn_code": i['url_shortened_code'], "active": str(i['active'])})
+
+        print(res_dict) # DEBUG
+
+        if len(res_dict) < 1:
+            res_dict = []
+            res_dict.append({"status": "ERROR_URLSHRTN_NOT_FOUND", "url_shrtn_code": str(url_shortened_code)})
+
+        return res_dict[0]
+
+
+
     def get_url_shrtn(self, url_original):  
         res = self.db.execute("select top 1 x.[url_shortened], x.[url_original], x.[expiration_time_str] as [expiration_time], x.[active] from dbo.url_map x where [url_original] = %s", url_original)
         res_dict = []

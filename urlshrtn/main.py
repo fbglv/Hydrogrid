@@ -86,6 +86,17 @@ def addurlshrtn(url_orig_prc, url_orig_dom, exp_days="3"):
 
 
 
+@app.route('/delurlshrtn/<url_shrt_code>', methods = ['GET'])
+def delurlshrtn(url_shrt_code):
+    print("\n\n/delurlshrtn/: " + str(url_shrt_code))
+    
+    res = dbmgr.del_url_shrtn(url_shrt_code)
+
+    return jsonify(res)
+
+
+
+
 
 """
 @app.route('/redirect_url_shrt', methods = ['POST', 'GET'])
