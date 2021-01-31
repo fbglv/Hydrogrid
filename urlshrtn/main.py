@@ -20,7 +20,9 @@ dbmgr.connect_db()
 # url_service = Blueprint('url_api', __name__) # flask blueprints: https://flask.palletsprojects.com/en/1.1.x/blueprints/
 
 
-
+#
+#   geturlshrtn: returns the shortened url for a given url (internal)
+#
 @app.route('/geturlshrtn/<url_shrt_code>', methods=['GET'])
 def getUrlShrtn(url_shrt_code):
     print("\n\n/geturlshrtn/ for: " + str(url_shrt_code))
@@ -31,25 +33,9 @@ def getUrlShrtn(url_shrt_code):
 
 
 
-
-
-
-@app.route('/geturlorig/<url_shrt>', methods = ['GET'])
-def getUrlOrig(url_shrt):
-
-    url_orig = dbmgr.get_url_orig(url_shrt)
-
-    print("\n\n/geturlorig/ for: " + str(url_shrt))
-    print(url_orig)
-    type("urls_orig_type: " + str(url_orig))
-    print("urls_orig: " + str(url_orig))
-
-    return jsonify(url_orig)    
-
-
-
-
-
+#
+#   teleport: redirects to the website represented by the shortened URL
+#
 @app.route('/teleport/<url_shrt_code>', methods = ['GET'])
 def teleport(url_shrt_code):
     print("\n\n/teleport/ for: " + str(url_shrt_code))
@@ -67,12 +53,11 @@ def teleport(url_shrt_code):
     else:    
         return jsonify(res)
 
-    # return redirect("http://" + url_orig['url_original'])
-    # return redirect(f"http://{urls_orig[0]}")
 
 
-
-
+#
+#   addurlshrtn: generates a new shortened url for a given url (protocol + domain) and expiration days
+#
 @app.route('/addurlshrtn/<url_orig_prc>/<url_orig_dom>/<exp_days>', methods=['GET'])
 @app.route('/addurlshrtn/<url_orig_prc>/<url_orig_dom>/', methods = ['GET'])
 def addurlshrtn(url_orig_prc, url_orig_dom, exp_days="3"):
@@ -83,7 +68,9 @@ def addurlshrtn(url_orig_prc, url_orig_dom, exp_days="3"):
     return jsonify(res)
 
 
-
+#
+#   delurlshrtn: removes a shortened url
+#
 @app.route('/delurlshrtn/<url_shrt_code>', methods = ['GET'])
 def delurlshrtn(url_shrt_code):
     print("\n\n/delurlshrtn/: " + str(url_shrt_code))
@@ -91,8 +78,6 @@ def delurlshrtn(url_shrt_code):
     res = dbmgr.del_url_shrtn(url_shrt_code)
 
     return jsonify(res)
-
-
 
 
 

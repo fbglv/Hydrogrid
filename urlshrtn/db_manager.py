@@ -78,20 +78,3 @@ class DbManager:
 
         return res_dict[0] 
 
-
-    """
-    def get_url_orig(self, url_shortened_code):  
-        res = self.db.execute("select top 1 x.[url_original], x.[url_shortened], x.[url_shortened_code], x.[active] from dbo.url_map x where [url_shortened_code] = %s", url_shortened_code)
-        res_dict = []
-        for i in res:
-            res_dict.append({"status": "OK", "url_original": i['url_original'], "url_shortened": i['url_shortened'], "url_shortened_code": i['url_shortened_code'], "active": i['active']})
-
-        if len(res_dict) < 1:
-            res_dict.append({"status": "ERROR_NO_URLSHRTN_STORED"})
-        elif res_dict[0]['active'] == False:
-            res_dict = []
-            res_dict.append({"status": "ERROR_URL_NOT_ACTIVE"})
-
-        return res_dict[0]
-    """
-
