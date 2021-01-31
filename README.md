@@ -17,6 +17,9 @@ The solution must be started by **Docker Compose**. Docker-Compose builds and ru
 * **hydrogrid_db**: the container running the database instance (Microsoft SQL Server). The database data files are persisted in the host machine.
 * **hydrogrid_urlshrtn**: the container hosting the python-based webserver software and a conda instance to run it
 
+**!! PLEASE WAIT AT LEAST 5 minutes after having issued docker-composed, till the system is up and running!! The database needs time in order to get started and populated by the initialization script (init_db.sql).**
+
+
 ### Installation
 
 Download from GitHub the the entire git repository:
@@ -147,5 +150,12 @@ the `db/test.sql` can be used to test and check the database structure and conte
 
 ## Software Architect Task B - Database Design for Settings
 
-The task corresponds to the `SettingsDatabaseDesign.pdf` file.
+The task has been implemented in form of (populated) tables and and a view for the frontend. All database objects can be find in the `Hydrogrid` database of the `hydrogrid_db` MSSQL container instance, which can be accessed by **SQL Management Studio** using the following credentials:
+* **Hostname**: `127.0.0.1`
+* **Port**: `1433` (MSSQL standard)
+* **Database**: `Hydrogrid`
+* **Authentication Type**: SQL Credentials Authentication
+
+The frontend can access directly the flat, denormalized (2NF) `Hydrogrid.dbo.Setting` database view.
+
 
