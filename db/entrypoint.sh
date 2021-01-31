@@ -17,6 +17,6 @@ if [ "$1" = '/opt/mssql/bin/sqlservr' ]; then
       touch /tmp/app-initialized
     }
     initialize_app_database &
-  fi
+  fi 
 fi
 exec "$@"
