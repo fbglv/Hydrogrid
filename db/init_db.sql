@@ -126,6 +126,8 @@ create table [dbo].[Setting_Base]
 	[Setting_Value] nvarchar(50) null
 );
 
+create unique index [UX_Setting_Base_Code] on [dbo].[Setting_Base]([Setting_Code]);
+
 -- truncate table [dbo].[Setting_Base];
 
 
