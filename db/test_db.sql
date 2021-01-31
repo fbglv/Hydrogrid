@@ -8,6 +8,14 @@ go
 select x.* from [dbo].[url_map] x;
 
 
+
+select x.* from [dbo].[Setting] x;
+select x.* from [dbo].[Setting_ValidyTimeframe] x;
+
+
+
+
+/*
 begin transaction
 insert into [dbo].[url_map] ([url_original], [url_shortened_code], [expiration_time]) output inserted.* values (N'http://www.google.com', N'xxx', getdate()+convert(int, N'3'));
 commit transaction
@@ -15,11 +23,13 @@ commit transaction
 begin transaction
 delete from [dbo].[url_map] output deleted.* where [url_shortened_code] = N'xxx'
 commit transaction
+*/
 
 
 
 
 
+/*
 begin transaction
 
 merge into [dbo].[url_map] as Tgt
@@ -37,8 +47,8 @@ when matched then update set
 	Tgt.[expiration_time] = coalesce(Src.[expiration_time], Tgt.[expiration_time], getdate()+3)
 when not matched then insert ([url_original], [url_shortened_code], [expiration_time]) values (Src.[url_original], Src.[url_shortened_code], Src.[expiration_time])
 ;
-
 commit transaction
+*/
 
 
 
