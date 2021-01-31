@@ -1,5 +1,9 @@
 
-FROM ubuntu:latest
+
+ubuntu:20.04
+
+# FROM ubuntu:latest
+FROM ubuntu:20.04
 
 
 LABEL mantainer="Fabio Galvagni"
