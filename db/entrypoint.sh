@@ -10,7 +10,7 @@ if [ "$1" = '/opt/mssql/bin/sqlservr' ]; then
     function initialize_app_database() 
     {
       # wait a bit for SQL Server to start. SQL Server's process doesn't provide a clever way to check if it's up or not, and it needs to be up before we can import the application database
-      sleep 25s
+      sleep 100s
       # run the setup script to create the DB and the schema in the DB
       /opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P 1234qwerASDF -d master -i init_db.sql
       # note that the container has been initialized so future starts won't wipe changes to the data
