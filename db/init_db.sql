@@ -413,7 +413,7 @@ select distinct
 	
 
 	-- DEBUG
-	[<---- ONLY FOR DEBUG PURPOSES ---->] = '                         '
+	[<---- ONLY FOR DEBUG PURPOSES ---->] = '                         ',
 	 
 	x.[From_Dt],
 	x.[RfDt],
@@ -439,6 +439,6 @@ from
 go
 
 
-select x.* from [dbo].[Setting] x;
+-- select x.* from [dbo].[Setting] x;
 
 
