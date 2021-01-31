@@ -156,6 +156,7 @@ The task has been implemented in form of (populated) tables and and a view for t
 * **Database**: `Hydrogrid`
 * **Authentication Type**: SQL Credentials Authentication
 
-The frontend can access directly the flat, denormalized (2NF) `Hydrogrid.dbo.Setting` database view.
+The solution is design in order for the frontend to access directly the flat, denormalized (2NF) `Hydrogrid.dbo.Setting` database view. The view shows which settings are active in the current moment (`ACTIVE=Y`), one row per setting, except for the `SELECTION` ones, which have a row per selection.
 
+The `dbo.Setting` view is based on the `dbo.Setting_Base`, `dbo.Setting_Selection`, `dbo.Setting_Type` and `dbo.Setting_Validity` tables.
 
