@@ -313,8 +313,8 @@ values
 ('TBBX07', null, 8, null, 1, null, null, 8, null, 16, null), -- from the 1st to the 16th of august, every year, every day
 ('PID078', null, 8, null, 1, 9, null, 8, null, 16, 13), -- from the 1st to the 16th of august, every year, every day, from 09:00 to 13:00
 ('PMX003', null, 1, null, 1, null, null, 1, null, 31, null), -- from the 1st to the 31th of january, every year
-('PID078', null, 1, 4, 1, null, null, 1, 7, 31, null), -- from thurday to sunday of january, every year
-('PMX003', null, 1, 4, 1, null, null, 1, 6, 31, null), -- from thurday to saturday of january, every year
+('PID078', null, 1, 4, null, null, null, 1, 7, null, null), -- from thurday to sunday of january, every year
+('PMX003', null, 1, 4, null, null, null, 1, 6, null, null), -- from thurday to saturday of january, every year
 ('PMX003', null, null, 7, null, 14, null, null, 7, null, 14) -- every sunday at 15:00 (between 14:00 and 15:00)
 ;
 
@@ -409,11 +409,12 @@ select distinct
 		)
 		then	'Y'
 		else	'N'
-	end
+	end,
 	
 
 	-- DEBUG
-	/* 
+	[<---- ONLY FOR DEBUG PURPOSES ---->] = '                         '
+	 
 	x.[From_Dt],
 	x.[RfDt],
 	x.[To_Dt],
@@ -425,7 +426,7 @@ select distinct
 	x.[From Hour],
 	x.[Rf_Hour],
 	x.[To_Hour]	
-	*/
+	
 
 from
 	[dbo].[Setting_Base] sb

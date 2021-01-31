@@ -9,8 +9,8 @@ select x.* from [dbo].[url_map] x;
 
 
 
-select x.* from [dbo].[Setting] x;
-select x.* from [dbo].[Setting_ValidyTimeframe] x;
+select x.* from [dbo].[Setting] x order by [Setting_Code];
+select x.* from [dbo].[Setting_ValidyTimeframe] x order by [Setting_Code];
 
 
 
