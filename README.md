@@ -17,7 +17,7 @@ The solution must be started by **Docker Compose**. Docker-Compose builds and ru
 * **hydrogrid_db**: the container running the database instance (Microsoft SQL Server). The database data files are persisted in the host machine.
 * **hydrogrid_urlshrtn**: the container hosting the python-based webserver software and a conda instance to run it
 
-**!! PLEASE WAIT AT LEAST 5 minutes after having issued docker-composed, till the system is up and running!! The database needs time in order to get started and populated by the initialization script (init_db.sql).**
+**!! PLEASE WAIT AT LEAST 5 minutes after having issued docker-composed, till the system is up and running!! The database needs time in order to get started and populated by the initialization script (init_db.sql). Wait AT LEAST until the docker-compose console output shows the following message: "Changed database context to 'Hydrogrid'". **
 
 
 ### Installation

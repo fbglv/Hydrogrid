@@ -306,16 +306,15 @@ begin transaction
 insert into [dbo].[Setting_ValidyTimeframe]
 ([Setting_Code], [From_Year], [From_Month], [From_Weekday], [From_DayOfMonth], [From_Hour], [To_Year], [To_Month], [To_Weekday], [To_DayOfMonth], [To_Hour])
 values
-('PID078', 2020, 8, null, 11, null, null, null, null, null, null), -- from 18.08.2020 to forever
-('PMX003', null, null, null, null, 6, null, null, null, null, 18), -- every day from 06:00 to 18:00
--- ('CTSL817', 2020, 10, null, 1, null, 2020, 11, null, 1, 18), -- every day from 06:00 to 18:00
-('CTSL817', 2020, null, null, null, null, 2021, null, null, null, null), -- from 2020 to 2021
-('TBBX07', null, 8, null, 1, null, null, 8, null, 16, null), -- from the 1st to the 16th of august, every year, every day
-('PID078', null, 8, null, 1, 9, null, 8, null, 16, 13), -- from the 1st to the 16th of august, every year, every day, from 09:00 to 13:00
-('PMX003', null, 1, null, 1, null, null, 1, null, 31, null), -- from the 1st to the 31th of january, every year
-('PID078', null, 1, 4, null, null, null, 1, 7, null, null), -- from thurday to sunday of january, every year
-('PMX003', null, 1, 4, null, null, null, 1, 6, null, null), -- from thurday to saturday of january, every year
-('PMX003', null, null, 7, null, 14, null, null, 7, null, 14) -- every sunday at 15:00 (between 14:00 and 15:00)
+('PID078', 2020, 8, null, 11, null, null, null, null, null, null), 
+('PMX003', null, null, null, null, 6, null, null, null, null, 18),
+('CTSL817', 2020, null, null, null, null, 2021, null, null, null, null),
+('TBBX07', null, 8, null, 1, null, null, 8, null, 16, null),
+('PID078', null, 8, null, 1, 9, null, 8, null, 16, 13),
+('PMX003', null, 1, null, 1, null, null, 1, null, 31, null),
+('PID078', null, 1, 4, null, null, null, 1, 7, null, null),
+('PMX003', null, 1, 4, null, null, null, 1, 6, null, null),
+('PMX003', null, null, 7, null, 14, null, null, 7, null, 14)
 ;
 
 commit transaction
@@ -409,9 +408,9 @@ select distinct
 		)
 		then	'Y'
 		else	'N'
-	end,
+	end
 	
-
+	/*
 	-- DEBUG
 	[<---- ONLY FOR DEBUG PURPOSES ---->] = '                         ',
 	 
@@ -426,7 +425,7 @@ select distinct
 	x.[From Hour],
 	x.[Rf_Hour],
 	x.[To_Hour]	
-	
+	*/
 
 from
 	[dbo].[Setting_Base] sb
